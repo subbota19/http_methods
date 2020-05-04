@@ -107,7 +107,8 @@ def delete_user(request):
 def updated_user(request):
     status = 200
     try:
-        updated_count = MyUser.objects.all().filter(id=request['id']).update(name=request['name'], year=request['year'])
+        allowed_parameters = {key: value[0] for key, value in dict(request).items() if key in ['name', 'year']}
+        updated_count = MyUser.objects.all().filter(id=request['id']).update(**allowed_parameters)
         if not updated_count:
             raise MyUser.DoesNotExist
     except KeyError:
