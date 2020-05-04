@@ -12,7 +12,9 @@ class MethodView(View):
         return services.create_user(request.POST)
 
     def delete(self, request, *args, **kwargs):
-        return services.delete_user(request.GET)
+        request.method = "POST"
+        request._load_post_and_files()
+        return services.delete_user(request.POST)
 
     def put(self, request, *args, **kwargs):
         request.method = "POST"
